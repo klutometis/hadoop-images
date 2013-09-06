@@ -1,0 +1,7 @@
+* TODO Compare streaming and HIPI
+* TODO HIPI
+  See [[http://hipi.cs.virginia.edu/][here]]; especially [[http://hipi.cs.virginia.edu/examples/downloader.html][here]].
+* TODO Streaming
+  #+BEGIN_SRC sh :comments link :tangle download-images.sh :shebang #!/usr/bin/env bash
+  
+  #+END_SRC
