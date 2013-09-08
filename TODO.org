@@ -5,3 +5,6 @@
   #+BEGIN_SRC sh :comments link :tangle download-images.sh :shebang #!/usr/bin/env bash
   
   #+END_SRC
+* TODO Crawler
+  Let’s crawl from an arbitrary site (e.g. [[http://www.apple.com/][apple]]), sluping images and
+  visiting linked sites.
