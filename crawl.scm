@@ -48,14 +48,16 @@
           (debug url)
           (handle-exceptions exn
             (begin
-              ;; (debug (condition->list exn))
-              (debug (get-condition-property exn 'exn 'message))
+              (debug (condition->list exn))
+              ;; (debug (get-condition-property exn 'exn 'message))
+              (hash-table-delete! horizon url)
               (iter (add1 time)))
             (let ((document (parameterize ((tcp-connect-timeout 1000))
                               (with-input-from-request
                                url
                                #f
                                html->sxml))))
+              ;; (debug document)
               (let ((links (make-hash-table)))
                 (pre-post-order
                  document
