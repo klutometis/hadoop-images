@@ -29,7 +29,9 @@
   (uri->string (uri-relative-to (uri-reference link) (uri-reference url))))
 
 (let ((images (make-hash-table))
-      (horizon (horizon-from-urls "urls.txt"))
+      (horizon (alist->hash-table '(("http://msdn.microsoft.com" . #f)))
+               ;; (horizon-from-urls "urls.txt")
+               )
       (explored (make-hash-table)))
   ;; (debug (hash-table->alist horizon))
   (let iter ((time 0))
