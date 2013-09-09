@@ -8,3 +8,35 @@
 * TODO Crawler
   Let’s crawl from an arbitrary site (e.g. [[http://www.apple.com/][apple]]), sluping images and
   visiting linked sites.
+* TODO Get some images
+  #+BEGIN_SRC scheme
+    (use debug
+         http-client
+         html-parser
+         sxpath
+         sxpath-lolevel
+         sxml-transforms
+         uri-common)
+    
+    (let ((images (make-parameter '())))
+      (let iter ((horizon (make-parameter '("http://www.apple.com")))
+                 (explore (make-parameter '()))
+                 (time 0))
+        (if (or (null? horizon) (> time 10))
+            (images)
+            (let* ((url (car horizon))
+                  (document (with-input-from-request
+                             "http://www.apple.com"
+                             #f
+                             html->sxml)))
+              (let ((links (make-parameter '())))
+                (pre-post-order
+                 document
+                 `((*default* . ,(lambda node node))
+                   (img . ,(lambda node (images (cons (sxml:text (sxml:attr node 'src))
+                                                 (images)))))
+                   (a . ,(lambda node (links (cons (sxml:text (sxml:attr node 'href))
+                                              (links)))))))
+                (values (images)
+                        (filter (compose absolute-uri? uri-reference) (links))))))))
+  #+END_SRC
