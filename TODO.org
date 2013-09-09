@@ -9,7 +9,7 @@
   Let’s crawl from an arbitrary site (e.g. [[http://www.apple.com/][apple]]), sluping images and
   visiting linked sites.
 * TODO Get some images
-  #+BEGIN_SRC scheme
+  #+BEGIN_SRC scheme :comments link :tangle crawl.scm :shebang #!/usr/bin/env chicken-scheme
     (use debug
          http-client
          html-parser
@@ -24,11 +24,11 @@
                  (time 0))
         (if (or (null? horizon) (> time 10))
             (images)
-            (let* ((url (car horizon))
-                  (document (with-input-from-request
-                             "http://www.apple.com"
-                             #f
-                             html->sxml)))
+            (let* ((url (car (horizon)))
+                   (document (with-input-from-request
+                              "http://www.apple.com"
+                              #f
+                              html->sxml)))
               (let ((links (make-parameter '())))
                 (pre-post-order
                  document
@@ -40,3 +40,5 @@
                 (values (images)
                         (filter (compose absolute-uri? uri-reference) (links))))))))
   #+END_SRC
+
+  Notion of roots and depth from roots?
