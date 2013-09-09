@@ -42,3 +42,6 @@
   #+END_SRC
 
   Notion of roots and depth from roots?
+
+  During the reduction phase, we’re tabulating the bytes that were
+  transferred at some time $t$.
