@@ -1,4 +1,4 @@
 Let’s use Hadoop’s mappers as trivial workers to download images via
-an Hadoop-agnostic streaming job:
+an [[download-images.sh][Hadoop-agnostic streaming job]]:
 
 [[images.png]]
