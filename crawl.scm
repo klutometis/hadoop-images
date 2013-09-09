@@ -9,6 +9,7 @@
      sxpath
      sxpath-lolevel
      sxml-transforms
+     tcp
      uri-common)
 
 (require-library aima-csp)
@@ -50,10 +51,11 @@
               ;; (debug (condition->list exn))
               (debug (get-condition-property exn 'exn 'message))
               (iter (add1 time)))
-            (let ((document (with-input-from-request
-                             url
-                             #f
-                             html->sxml)))
+            (let ((document (parameterize ((tcp-connect-timeout 1000))
+                              (with-input-from-request
+                               url
+                               #f
+                               html->sxml))))
               (let ((links (make-hash-table)))
                 (pre-post-order
                  document
