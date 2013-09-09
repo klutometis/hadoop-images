@@ -5,9 +5,9 @@
 hadoop fs -rmr /images
 hadoop jar ${HADOOP_PREFIX}/contrib/streaming/hadoop-streaming*.jar \
     -D mapred.reduce.tasks=0 \
-    -input /images-head.txt \
+    -input /images-hadoop.txt \
     -output /images \
-    -mapper 'download-images.sh hadoop' \
-    -file download-images.sh
+    -file download-images.sh \
+    -mapper 'download-images.sh hadoop'
 
 # Streaming:2 ends here
