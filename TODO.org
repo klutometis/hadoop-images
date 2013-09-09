@@ -1,3 +1,5 @@
+* TODO Process the images
+  Download and do something to the images.
 * TODO Compare streaming and HIPI
 * TODO HIPI
   See [[http://hipi.cs.virginia.edu/][here]]; especially [[http://hipi.cs.virginia.edu/examples/downloader.html][here]].
