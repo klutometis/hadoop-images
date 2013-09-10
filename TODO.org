@@ -1,3 +1,4 @@
+* TODO Should be a time-based demo instead of image-based.
 * TODO Process the images
   Download and do something to the images.
 * TODO Compare streaming and HIPI
