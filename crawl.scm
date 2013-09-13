@@ -9,49 +9,48 @@
      sxpath
      sxpath-lolevel
      sxml-transforms
+     syslog
      tcp
      uri-common)
 
 (require-library aima-csp)
 (import (only aima-csp shuffle))
 
+(debug-priority prio/info)
+
 (define (horizon-from-urls urls)
+  (with-input-from-file urls horizon-from-input))
+
+(define (horizon-from-input)
   (let ((horizon (make-hash-table)))
-    (with-input-from-file urls
-      (lambda ()
-        (let iter ((url (read-line)))
-          (unless (eof-object? url)
-            (hash-table-set! horizon url #f)
-            (iter (read-line))))))
+    (let iter ((url (read-line)))
+      (unless (eof-object? url)
+        (hash-table-set! horizon url #f)
+        (iter (read-line))))
     horizon))
 
 (define (absolute-url link url)
   (uri->string (uri-relative-to (uri-reference link) (uri-reference url))))
 
 (let ((images (make-hash-table))
-      (horizon (alist->hash-table '(("http://msdn.microsoft.com" . #f)))
-               ;; (horizon-from-urls "urls.txt")
-               )
+      (horizon (horizon-from-input))
       (explored (make-hash-table)))
-  ;; (debug (hash-table->alist horizon))
+  ;; (debug/syslog (hash-table->alist horizon))
   (let iter ((time 0))
-    (debug time (hash-table-size images))
+    (debug/syslog time (hash-table-size images))
     (if (or (zero? (hash-table-size horizon))
             ;; (> time 10)
             (> (hash-table-size images) 100))
-        ;; (debug (hash-table-keys images))
-        (with-output-to-file "images.txt"
-          (lambda ()
-            (hash-table-walk images
-              (lambda (image _)
-                (format #t "~a\n" image))))
-          #:append)
+        ;; (debug/syslog (hash-table-keys images))
+        (hash-table-walk images
+          (lambda (image _)
+            (format #t "~a\n" image)))
         (let ((url (car (shuffle (hash-table-keys horizon)))))
-          (debug url)
+          (debug/syslog url)
           (handle-exceptions exn
             (begin
-              (debug (condition->list exn))
-              ;; (debug (get-condition-property exn 'exn 'message))
+              (debug/syslog (condition->list exn))
+              ;; (debug/syslog (get-condition-property exn 'exn 'message))
               (hash-table-delete! horizon url)
               (iter (add1 time)))
             (let ((document (parameterize ((tcp-connect-timeout 1000))
@@ -59,7 +58,7 @@
                                url
                                #f
                                html->sxml))))
-              ;; (debug document)
+              ;; (debug/syslog document)
               (let ((links (make-hash-table)))
                 (pre-post-order
                  document
