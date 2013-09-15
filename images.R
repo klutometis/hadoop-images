@@ -5,6 +5,6 @@ data <- rbind(read.csv('images-hadoop.csv', header=F, col.names=c('time', 'index
 png("images.png")
 ggplot(data=data, aes(x=time, y=bytes, col=index)) +
   geom_point() +
-  geom_smooth()
+  stat_smooth(method=lm)
 
 dev.off()
