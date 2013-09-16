@@ -5,3 +5,5 @@ an [[download-images.sh][Hadoop-agnostic streaming job]]:
 
 Use Hadoop-mappers as workers is roughly /k/-times as fast as a serial
 downloader, where /k/ is the number of mappers.
+
+Here’s a link to the [[http://youtu.be/qqtpSam4bC8][canned demo]].
